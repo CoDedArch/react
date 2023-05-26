@@ -2,8 +2,8 @@ import './index.css';
 import Employee from './components/Employee';
 import { useState } from 'react';
 import { v4 as uuidV4 } from 'uuid';
-
-
+import AddEmployee from './components/AddEmployee copy';
+import EditEmployee from './components/EditEmployee';
 
 
 function App() {
@@ -48,25 +48,47 @@ function App() {
 
     setEmployees(updatedEmployee)
   }
+
+  function addEmployee(name, role, imgUrl) {
+    setEmployees(prevEmployees => {
+      return [...prevEmployees, {
+        id: prevEmployees.length + 1,
+        name: name,
+        role: role, 
+        url: imgUrl
+      }]
+    })
+  }
   
   return (
-    <div className="App justify-center" >
+    <div className="App " >
         {showEmployees?
         <>
-          <div className='flex flex-wrap'>
+          <div className='flex flex-wrap justify-center'> 
             {
-              employees.map((employee) => <Employee
-                id={employee.id}
-                name={employee.name} role={employee.role}
-                img={employee.url}
-                key={uuidV4}
-                updateEmployee={updateEmployee}              
-              />)
+              employees.map((employee) => {
+                const editEmployee = <EditEmployee
+                id= {employee.id}
+                name={employee.name}
+                role={employee.role}
+                updateEmployee={updateEmployee} />
+                
+                return (
+                  <Employee
+                    id={employee.id}
+                    name={employee.name} role={employee.role}
+                    img={employee.url}
+                    key={uuidV4}
+                    editEmployee = {editEmployee}
+                  />
+                )
+              })
             }
           </div>
         </> :
         <h1>Not Allowed to show employees</h1>
         }
+      <AddEmployee addEmployee = {addEmployee} />
     </div>
   );
 }
